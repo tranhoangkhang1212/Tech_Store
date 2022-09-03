@@ -1,0 +1,69 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/marketplace",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/next:build",
+            "outputs": ["{options.outputPath}"],
+            "defaultConfiguration": "production",
+            "options": {
+                "glob": "**/*",
+                "root": "apps/marketplace",
+                "outputPath": "dist/apps/marketplace",
+                "assets": ["apps/marketplace/favicon.ico", "apps/marketplace/assets"],
+                "style": ["apps/marketplace/public/styles/global.scss"],
+                "scripts": [],
+                "webpackConfig": "@nrwl/react/plugins/webpack",
+                "postcssConfig": "apps/marketplace/postcss.config.js"
+            },
+            "configurations": {
+                "development": {
+                    "outputPath": "apps/marketplace"
+                },
+                "production": {}
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/next:server",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "marketplace:build",
+                "dev": true,
+                "port": 5200
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "marketplace:build:development",
+                    "dev": true
+                },
+                "production": {
+                    "buildTarget": "marketplace:build:production",
+                    "dev": false
+                }
+            }
+        },
+        "export": {
+            "executor": "@nrwl/next:export",
+            "options": {
+                "buildTarget": "marketplace:build:production"
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/apps/marketplace"],
+            "options": {
+                "jestConfig": "apps/marketplace/jest.config.ts",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/marketplace/**/*.{ts,tsx,js,jsx}"]
+            }
+        }
+    },
+    "tags": []
+}
